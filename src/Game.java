@@ -2,13 +2,14 @@ public class Game {
     private Room currentRoom;
     private Parser parser;
     private Player player;
+    private String book = "book";
     Items pasta = new Items();
     Items chicken = new Items();
-    Room restaurant = new Room("restaurant\n", "To the south is the entrance to your kitchen, where all the food is prepared. All around you are circular tables covered with elegant silverware and white tablecloths,\nall filled with people talking, laughing, and enjoying their delicious meals. Sitting alone in the corner is a man dressed in all black, who you recognize to be a renowned yet cynical food critic,\nfamous for his scathing reviews and unfavorable attitude. His review will make or break the success of your restaurant, and he is staring at you waiting for you to talk to him.");
-    Room kitchen = new Room("kitchen\n", "To the south is a staircase that leads down into the cellar. To the east and west are two doors that lead to two separate rooms.\nOn the table is a cookbook, conveniently opened to the desired recipe and ready for you to read. Next to the cookbook is a kitchen knife, which could be used to chop ingredients.\nOn top of the stove is a large pot already filled with water, heated to the perfect temperature for whatever you wish to make.\n");
-    Room cellar = new Room("cellar\n", "long Description");
-    Room pantry = new Room("pantry\n", "long Description");
-    Room spices = new Room("spice room\n", "long Description");
+    Room restaurant = new Room("You stand in the center of your new and growing restaurant, crowded and bustling with noise and energy,\nbut one solemn man captures your full attention.", "To the south is the entrance to your kitchen, where all the food is prepared. All around you are circular tables covered with elegant silverware and white tablecloths,\nall filled with people talking, laughing, and enjoying their delicious meals. Sitting alone in the corner is a man dressed in all black, who you recognize to be a renowned yet cynical food critic,\nfamous for his scathing reviews and unfavorable attitude. His review will make or break the success of your restaurant, and he is staring at you waiting for you to talk to him.");
+    Room kitchen = new Room("You enter your beloved kitchen, equipped with a large wood table in the center and a stove in the back corner.", "To the south is a staircase that leads down into the cellar. To the east and west are two doors that lead to two separate rooms.\nOn the table is a cookbook, conveniently opened to the desired recipe and ready for you to read. On top of the stove is a large pot already filled with water,\nheated to the perfect temperature for whatever you wish to make.\n");
+    Room cellar = new Room("You descend into the cellar, A dark, cold room, thick with the stench of raw meat.", "To the north is a staircase leading up to the kitchen. All around you carcasses of various animals are hung from the ceiling,\nwaiting to be turned into a delicious meal. In the center is a metal table on which lies a platter of chicken meat. This would be perfect to use in a soup…");
+    Room pantry = new Room("Dimly lit by a lone hanging bulb, you stand in a small room lined with shelves from top to bottom.", "All around you are the various ingredients needed to make a wide range of recipes.\nOn the left are bins full of fruits and vegetables, and on the right the shelves are filled with countless bottles of wine that are served with dinner.\nOne box on the bottom shelf catches your eye; you notice it is labeled “Pasta.”");
+    Room spices = new Room("spice room", "long Description");
 
     public Game(){
         parser = new Parser();
@@ -101,13 +102,36 @@ public class Game {
 
             case TALK:
                 talk(command);
+                break;
+
+            case READ:
+                read(command);
+                break;
         }
         return wantToQuit;
+    }
+
+    private void read(Command command){
+        if(!currentRoom.equals(kitchen)){
+            System.out.println("There is nothing to read here.");
+        }
+        else if(!command.hasSecondWord()){
+            System.out.println("Read what?");
+        }
+        else if(!command.getSecondWord().equals(book)){
+            System.out.println("You can't read " + command.getSecondWord());
+        }
+        else {
+            System.out.println("Chicken Noodle Soup: Your Best Meal\nAdd chicken, pasta, and secret sauce into a pot\nthen grab soup and serve");
+        }
     }
 
     private void talk(Command command){
         if(!currentRoom.equals(restaurant) ){
             System.out.println("You can't talk here");
+        }
+        else if(command.hasSecondWord()){
+            System.out.println("Just type talk");
         }
         else{
             System.out.println("Cook me the best meal you have.");
@@ -203,7 +227,8 @@ public class Game {
         System.out.println();
         System.out.println("Welcome to my text adventure game!");
         System.out.println("You will have to cook your best meal to save your new restaurant.");
-        System.out.println("Type look to explore the room you are in.");
+        System.out.println("Type look to explore the room you are in. Type help for a list of possible commands.");
+
     }
 
 }
