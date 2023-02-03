@@ -22,7 +22,7 @@ public class Player {
         String returnString = "Player Inv: ";
         Set<String> keys = inventory.keySet();
         for(String item: keys){
-            returnString += "" + item;
+            returnString += " " + item;
         }
         return returnString;
     }
